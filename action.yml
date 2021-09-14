@@ -49,10 +49,8 @@ runs:
         status: completed
         conclusion: ${{ steps.dockerfile.outputs.conclusion }}
         output: |
-          {
-            "summary": "Dockerfile build status: ${{ steps.dockerfile.outputs.conclusion }}",
-            "text_description": "${{ steps.dockerfile.outputs.dockerfile }} ${{ steps.dockerfile.outputs.error }}"
-          }
+          {"summary": "Dockerfile build status: ${{ steps.dockerfile.outputs.conclusion }}"}
+        output_text_description_file: ${{ steps.dockerfile.outputs.dockerfile }}
 
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@v1.6.0

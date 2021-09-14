@@ -47,11 +47,11 @@ runs:
         sha: ${{ inputs.sha }}
         name: Build Dockerfile
         status: completed
-        conclusion: ${{ steps.dockerfile.outcome }}
+        conclusion: ${{ steps.dockerfile.outputs.conclusion }}
         output: |
           {
-            "summary": "Dockerfile Build status: ${{ steps.dockerfile.dockerfile }}",
-            "text_description": ${{ steps.dockerfile.outputs.dockerfile }}
+            "summary": "Dockerfile build status: ${{ steps.dockerfile.outputs.conclusion }}",
+            "text_description": "${{ steps.dockerfile.outputs.dockerfile }} ${{ steps.dockerfile.outputs.error" }}
           }
 
     - name: Lint Dockerfile

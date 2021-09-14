@@ -40,17 +40,17 @@ runs:
         input: ${{ inputs.dir }}/Dockerfile
         output: ${{ inputs.dir }}/Dockerfile.out
 
-    - uses: LouisBrunner/checks-action@v1.2.0
+      - uses: LouisBrunner/checks-action@v1.2.0
       with:
         token: ${{ inputs.github-token }}
         repo: ${{ inputs.repository }}
         sha: ${{ inputs.sha }}
         name: Build Dockerfile
         status: completed
-        conclusion: ${{ steps.dockerfile.conclusion }}
+        conclusion: ${{ steps.dockerfile.outcome }}
         output: |
           {
-            "summary": "Dockerfile Build status: ${{ steps.dockerfile.conclusion }}",
+            "summary": "Dockerfile Build status: ${{ steps.dockerfile.dockerfile }}",
             "text_description": ${{ steps.dockerfile.outputs.dockerfile }}
           }
 

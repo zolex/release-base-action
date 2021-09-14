@@ -86,7 +86,7 @@ runs:
           modix/base/${{ inputs.image }}
           245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }}
 
-      - name: Scan Image
-        uses: azure/container-scan@v0
-        with:
-          image-name: modix/base/${{ inputs.image }}
+    - name: Scan Image
+      uses: azure/container-scan@v0
+      with:
+        image-name: modix/base/${{ inputs.image }}

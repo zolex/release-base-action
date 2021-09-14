@@ -40,7 +40,7 @@ runs:
         input: ${{ inputs.dir }}/Dockerfile
         output: ${{ inputs.dir }}/Dockerfile.out
 
-      - uses: LouisBrunner/checks-action@v1.2.0
+    - uses: LouisBrunner/checks-action@v1.2.0
       with:
         token: ${{ inputs.github-token }}
         repo: ${{ inputs.repository }}

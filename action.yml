@@ -35,7 +35,10 @@ inputs:
     required: true
     default: 'eu-central-1'
   aws-key:
-    description: ''
+    description: 'AWS Key'
+    required: true
+  aws-secret:
+    description: 'AWS Secret'
     required: true
 
 runs:

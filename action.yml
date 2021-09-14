@@ -29,43 +29,20 @@ runs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-
-
-    - uses: octokit/request-action@v2.1.0
-      id: build_dockerfile
-      with:
-        route: POST /repos/{owner}/{repo}/check-runs
-        owner: ${{ inputs.owner }}
-        repo: ${{ inputs.repository }}
-        name: "Build Dockerfile"
-        head_sha: ${{ github.sha }}
-        output: |
-          title: Build Dockerfile
-          summary: A summary of the test check run
-          images:
-            - alt: Test image
-              image_url: https://octodex.github.com/images/jetpacktocat.png
-      env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
-
     - name: Build Dockerfile
       uses: zolex/include-action@v1
       with:
         input: ${{ inputs.dir }}/Dockerfile
         output: ${{ inputs.dir }}/Dockerfile.out
 
-    - uses: octokit/request-action@v2.1.0
+    - uses: LouisBrunner/checks-action@v1.2.0
       with:
-        route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
-        owner: ${{ inputs.owner }}
-        repo: ${{ inputs.repository }}
-        check_run_id: ${{ fromJson(steps.build_dockerfile.outputs.data).id }}
-        conclusion: "success"
-        status: "completed"
-      env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
-
-
+        token: ${{ inputs.github-token }}
+        name: Build Dockerfile
+        status: completed
+        conclusion: success
+        output: |
+          {"summary": "This is some very useful text :p"}
 
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@v1.6.0

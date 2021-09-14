@@ -59,7 +59,6 @@ runs:
             owner: "${{ steps.vars.outputs.owner }}",
             repo: "${{ steps.vars.outputs.repo }}",
             name: "Custom Script",
-            title: "Some funny title",
             started_at: date.toISOString(),
             completed_at: date.toISOString(),
             head_sha: "${{ inputs.sha }}",
@@ -67,7 +66,8 @@ runs:
             status: "completed",
             conclusion: "success",
             output: {
-              "summary": "Build status: ${{ job.status }}",
-              "text_description": "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
+              title: "Some funny title",
+              summary: "Build status: ${{ job.status }}",
+              text: "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
             }
           });

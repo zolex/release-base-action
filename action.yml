@@ -7,6 +7,19 @@ inputs:
   dir:
     description: 'Directory with the Dockerfile and docker context folder to build'
     required: true
+  github-token:
+    description: 'Github token'
+    required: true
+    default: ${{ github.token }}
+  owner:
+    description: 'Repository owner'
+    required: true
+    default: ${{ github.repository_owner }}
+  repository:
+    description: 'Github repository'
+    required: true
+    default: ${{ github.repository }}
+
 runs:
   using: 'composite'
   steps:
@@ -19,11 +32,11 @@ runs:
 
 
     - uses: octokit/request-action@v2.1.0
-      id: start_build
+      id: build_dockerfile
       with:
         route: POST /repos/{owner}/{repo}/check-runs
-        owner: modix
-        repo: base
+        owner: ${{ inputs.owner }}
+        repo: ${{ inputs.repository }}
         name: "Build Dockerfile"
         head_sha: ${{ github.sha }}
         output: |
@@ -33,7 +46,7 @@ runs:
             - alt: Test image
               image_url: https://octodex.github.com/images/jetpacktocat.png
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
 
     - name: Build Dockerfile
       uses: zolex/include-action@v1
@@ -42,16 +55,15 @@ runs:
         output: ${{ inputs.dir }}/Dockerfile.out
 
     - uses: octokit/request-action@v2.1.0
-      id: finish_build
       with:
         route: PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
-        owner: modix
-          repo: base
-        check_run_id: ${{ fromJson(steps.create_check_run.outputs.data).id }}
+        owner: ${{ inputs.owner }}
+        repo: ${{ inputs.repository }}
+        check_run_id: ${{ fromJson(steps.build_dockerfile.outputs.data).id }}
         conclusion: "success"
         status: "completed"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
 
 
 

@@ -19,6 +19,10 @@ inputs:
     description: 'Github repository'
     required: true
     default: ${{ github.repository }}
+  sha:
+    description: 'Github SHA'
+    required: true
+    default: ${{ github.sha }}
 
 runs:
   using: 'composite'
@@ -38,6 +42,8 @@ runs:
     - uses: LouisBrunner/checks-action@v1.2.0
       with:
         token: ${{ inputs.github-token }}
+        repo: ${{ inputs.repository }}
+        sha: ${{ inputs.sha }}
         name: Build Dockerfile
         status: completed
         conclusion: success
@@ -59,11 +65,4 @@ runs:
         context: ${{ inputs.dir }}/docker
         file: ${{ inputs.dir }}/Dockerfile.out
         push: false
-        tags: |
-          modix/base/${{ inputs.image }}
-          245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }}
-
-    - name: Scan Image
-      uses: azure/container-scan@v0
-      with:
-        image-name: modix/base/${{ inputs.image }}
+        tags: 245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }

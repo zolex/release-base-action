@@ -4,13 +4,9 @@ inputs:
   image:
     description: 'Name and Tag of the image'
     required: true
-  dockerfile:
-    description: 'Path to the Dockerfile to build'
+  dir:
+    description: 'Directory with the Dockerfile and docker context folder to build'
     required: true
-  context:
-    description: 'Context for buildx'
-    required: true
-    default: '.'
 runs:
   using: 'composite'
   steps:
@@ -23,18 +19,18 @@ runs:
     - name: Build Dockerfile
       uses: zolex/include-action@v1
       with:
-        input: ${{ inputs.dockerfile }}
-        output: ${{ inputs.dockerfile }}.out
+        input: ${{ inputs.dir }}/Dockerfile
+        output: ${{ inputs.dir }}/Dockerfile.out
 
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@v1.6.0
       with:
-        dockerfile: ${{ inputs.dockerfile }}.out
+        dockerfile: ${{ inputs.dir }}/Dockerfile.out
 
     - name: Build Image
       uses: docker/build-push-action@v2
       with:
-        context: ${{ inputs.context }}
-        file: ${{ inputs.dockerfile }}.out
+        context: ${{ inputs.dir }}/docker
+        file: ${{ inputs.dir }}/Dockerfile.out
         push: false
         tags: 245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }}

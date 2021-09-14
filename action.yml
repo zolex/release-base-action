@@ -2,7 +2,10 @@ name: 'Release Base Action'
 description: 'Github Composite Action for modix base releases'
 inputs:
   image:
-    description: 'Name and Tag of the image'
+    description: 'Name for the image'
+    required: true
+  tag:
+    description: 'Tag for the image'
     required: true
   dir:
     description: 'Directory with the Dockerfile and docker context folder to build'
@@ -23,6 +26,14 @@ inputs:
     description: 'Github SHA'
     required: true
     default: ${{ github.sha }}
+  customer-id:
+    description: 'AWS Customer ID'
+    required: true
+    default: '245309753215'
+  region:
+    description: 'AWS Region'
+    required: true
+    default: 'eu-central-1'
 
 runs:
   using: 'composite'
@@ -61,10 +72,29 @@ runs:
       shell: sh
       run:  mkdir -p ${{ inputs.dir }}/docker
 
+    - name: Set Image Tag
+      shell: sh
+      run: |
+        echo "IMAGE_TAG=${{ inputs.customer-id }}.dkr.ecr.${{ inputs.region }}.amazonaws.com/modix/base/${{ inputs.image }}:${{ inputs.tag }}" >> $GITHUB_ENV
+
     - name: Build Image
       uses: docker/build-push-action@v2
       with:
         context: ${{ inputs.dir }}/docker
         file: ${{ inputs.dir }}/Dockerfile.out
         push: false
-        tags: 245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }}
+        tags: ${{ env.IMAGE_TAG }}
+
+    - uses: LouisBrunner/checks-action@v1.2.0
+      with:
+        token: ${{ inputs.github-token }}
+        repo: ${{ inputs.repository }}
+        sha: ${{ inputs.sha }}
+        name: Build Image
+        status: completed
+        conclusion: ${{ job.status }}
+        output: |
+          {
+            "summary": "Build status: ${{ job.status }}",
+            "text_description": "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
+          }

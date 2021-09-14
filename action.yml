@@ -27,6 +27,10 @@ runs:
       with:
         dockerfile: ${{ inputs.dir }}/Dockerfile.out
 
+    - name: Ensure context
+      shell: sh
+      run:  mkdir -p ${{ inputs.dir }}/docker
+
     - name: Build Image
       uses: docker/build-push-action@v2
       with:

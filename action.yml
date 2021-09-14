@@ -120,3 +120,23 @@ runs:
             "summary": "Build status: ${{ job.status }}",
             "text_description": "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
           }
+
+    - uses: actions/github-script@v4
+      with:
+        script: |
+          const date = new Date();
+          github.checks.create({
+            owner: modix,
+            repo: base
+            name: "Custom Script",
+            started_at: date.toISOString(),
+            completed_at: date.toISOString(),
+            head_sha: ${{ inputs.sha }},
+            external_id: ${{ github.run_id }}
+            status: "completed",
+            conclusion: "success",
+            output: {
+              "summary": "Build status: ${{ job.status }}",
+              "text_description": "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
+            }
+          });

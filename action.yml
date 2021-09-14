@@ -65,4 +65,4 @@ runs:
         context: ${{ inputs.dir }}/docker
         file: ${{ inputs.dir }}/Dockerfile.out
         push: false
-        tags: 245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }
+        tags: 245309753215.dkr.ecr.eu-central-1.amazonaws.com/modix/base/${{ inputs.image }}

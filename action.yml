@@ -59,6 +59,7 @@ runs:
             owner: "${{ steps.vars.outputs.owner }}",
             repo: "${{ steps.vars.outputs.repo }}",
             name: "Custom Script",
+            title: "Some funny title",
             started_at: date.toISOString(),
             completed_at: date.toISOString(),
             head_sha: "${{ inputs.sha }}",

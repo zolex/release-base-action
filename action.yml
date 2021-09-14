@@ -50,25 +50,25 @@ runs:
         echo ::set-output name=owner::$(echo "${{ inputs.repository }}" | awk -F / '{print $1}')
         echo ::set-output name=repo::$(echo "${{ inputs.repository }}" | awk -F / '{print $2}')
 
-- uses: actions/github-script@v4
-  with:
-    github-token: ${{ inputs.github-token }}
-    debug: true
-    script: |
-      const date = new Date();
-      const check = await github.checks.create({
-        owner: "${{ steps.vars.outputs.owner }}",
-        repo: "${{ steps.vars.outputs.repo }}",
-        name: "Custom Script",
-        started_at: date.toISOString(),
-        completed_at: date.toISOString(),
-        head_sha: "${{ inputs.sha }}",
-        external_id: "${{ github.run_id }}",
-        status: "completed",
-        conclusion: "success",
-        output: {
-          title: "Some funny title",
-          summary: "Build status: ${{ job.status }}",
-          text: "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
-        }
-      });
+    - uses: actions/github-script@v4
+      with:
+        github-token: ${{ inputs.github-token }}
+        debug: true
+        script: |
+          const date = new Date();
+          const check = await github.checks.create({
+            owner: "${{ steps.vars.outputs.owner }}",
+            repo: "${{ steps.vars.outputs.repo }}",
+            name: "Custom Script",
+            started_at: date.toISOString(),
+            completed_at: date.toISOString(),
+            head_sha: "${{ inputs.sha }}",
+            external_id: "${{ github.run_id }}",
+            status: "completed",
+            conclusion: "success",
+            output: {
+              title: "Some funny title",
+              summary: "Build status: ${{ job.status }}",
+              text: "Image pushed to [${{ env.IMAGE_TAG }}](https://${{ inputs.region }}.console.aws.amazon.com/ecr/repositories/private/${{ inputs.customer-id }}/modix/base/${{ inputs.image }})"
+            }
+          });

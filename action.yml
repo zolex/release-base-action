@@ -62,7 +62,7 @@ runs:
             started_at: date.toISOString(),
             completed_at: date.toISOString(),
             head_sha: "${{ inputs.sha }}",
-            external_id: ${{ github.run_id }},
+            external_id: "${{ github.run_id }}",
             status: "completed",
             conclusion: "success",
             output: {

@@ -125,7 +125,7 @@ runs:
       with:
         script: |
           const date = new Date();
-          github.checks.create({
+          const check = await github.checks.create({
             owner: modix,
             repo: base
             name: "Custom Script",

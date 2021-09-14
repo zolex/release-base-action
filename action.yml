@@ -51,7 +51,7 @@ runs:
         output: |
           {
             "summary": "Dockerfile build status: ${{ steps.dockerfile.outputs.conclusion }}",
-            "text_description": "${{ steps.dockerfile.outputs.dockerfile }} ${{ steps.dockerfile.outputs.error" }}
+            "text_description": "${{ steps.dockerfile.outputs.dockerfile }} ${{ steps.dockerfile.outputs.error }}"
           }
 
     - name: Lint Dockerfile

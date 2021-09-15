@@ -62,7 +62,7 @@ runs:
         token: ${{ inputs.github-token }}
         repo: ${{ inputs.repository }}
         sha: ${{ inputs.sha }}
-        name: Assemble Dockerfile ${{ inputs.image }}:${{ inputs.tag }}
+        name: ${{ inputs.image }}:${{ inputs.tag }} Dockerfile
         status: completed
         conclusion: ${{ steps.dockerfile.outputs.conclusion }}
         output: |
@@ -112,7 +112,7 @@ runs:
         token: ${{ inputs.github-token }}
         repo: ${{ inputs.repository }}
         sha: ${{ inputs.sha }}
-        name: Build Image ${{ inputs.image }}:${{ inputs.tag }}
+        name: ${{ inputs.image }}:${{ inputs.tag }} Image
         status: completed
         conclusion: ${{ job.status }}
         output: |
